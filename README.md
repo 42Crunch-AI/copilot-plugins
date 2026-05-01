@@ -9,7 +9,7 @@ The official [42Crunch](https://www.42crunch.com) plugin marketplace for GitHub 
 ```
 .github/plugin
   marketplace.json              # Plugin registry manifest
-plugins/                        # Claude plugins developed by 42Crunch
+plugins/                        # Copilot plugins developed by 42Crunch
   api-security-testing/
     plugin.json                 # Plugin metadata
     skills/                     # Skill definitions
@@ -23,7 +23,13 @@ plugins/                        # Claude plugins developed by 42Crunch
 Register the 42Crunch marketplace with GitHub Copilot once, then install any plugin from it:
 
 ```
-/plugin marketplace add 42Crunch-AI/claude-plugins
+copilot plugin marketplace add 42Crunch-AI/copilot-plugins
+```
+
+Or from an interactive Copilot session:
+
+```
+/plugin marketplace add 42Crunch-AI/copilot-plugins
 ```
 
 ## Available Plugins
@@ -33,6 +39,14 @@ Register the 42Crunch marketplace with GitHub Copilot once, then install any plu
 AI-powered API security plugin backed by 42Crunch. Audit OpenAPI specs, detect OWASP API Security vulnerabilities (including BOLA/BFLA), run live conformance and authorization scans against running APIs, and apply AI-assisted fixes — all through natural language.
 
 **Install:**
+After registering the marketplace (see above), install the plugin:
+
+```
+copilot plugin install api-security-testing@42crunch-marketplace
+```
+
+Or from an interactive Copilot session:
+
 ```
 /plugin install api-security-testing@42crunch-marketplace
 ```

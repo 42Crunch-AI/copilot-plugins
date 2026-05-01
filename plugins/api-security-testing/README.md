@@ -29,13 +29,13 @@ The `42c-ast` binary is downloaded and kept up to date automatically on first us
 Add the 42Crunch marketplace:
 
 ```
-/plugin marketplace add 42Crunch-AI/copilot-plugins
+copilot plugin marketplace add 42Crunch-AI/copilot-plugins
 ```
 
 Install the `api-security-testing` plugin:
 
 ```
-/plugin install api-security-testing@42crunch-marketplace
+copilot plugin install api-security-testing@42crunch-marketplace
 ```
 
 ## Quick Start
