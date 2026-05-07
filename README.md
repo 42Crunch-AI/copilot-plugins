@@ -7,11 +7,12 @@ The official [42Crunch](https://www.42crunch.com) plugin marketplace for GitHub 
 ## Structure
 
 ```
-.github/plugin
+.github/plugin/
   marketplace.json              # Plugin registry manifest
 plugins/                        # Copilot plugins developed by 42Crunch
   api-security-testing/
-    plugin.json                 # Plugin metadata
+    .github/plugin/
+      plugin.json                 # Plugin metadata
     skills/                     # Skill definitions
     references/                 # Reference definitions
     README.md                   # Documentation

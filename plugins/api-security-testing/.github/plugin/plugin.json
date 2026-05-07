@@ -13,7 +13,7 @@
     "./skills/42crunch-api-security-testing",
     "./skills/code-to-oas"
   ],
-  "license": "Apache 2.0",
+  "license": "MIT",
   "keywords": [
     "openapi",
     "api-security",
