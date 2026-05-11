@@ -25,7 +25,20 @@ explicit user permission before execution.
    file selection, use the context `"pipeline"` (e.g. "Which one should I run
    through the pipeline?"). Do not proceed if any step fails or the user cancels.
 
-2. **Resolve the scan target URL.**
+2. **Ask for Phase 1 permission.** Call `AskUserQuestion`:
+   - **question**: `"Ready to run a 42Crunch Audit on <filename>. This will analyse your OAS file and produce a scored report. Shall I proceed?"`
+   - **options**: `["Yes, proceed", "No, cancel"]`
+
+3. **Execute Phase 1 — Audit.** Mode is already resolved from pre-flight — do
+   not re-derive it. Read `../../references/audit-workflow.md` and apply only
+   the commands for the identified mode throughout.
+   The workflow runs the audit, then presents a **developer-readable,
+   risk-classified report** (SQG-Blocking / Security / Data Validation tiers)
+   with plain-English titles and risk descriptions — no raw rule IDs. It then
+   pauses and asks the user to consent before applying any fixes. Fixes are
+   only applied after explicit confirmation.
+
+4. **Resolve the scan target URL.**
 
    Read `servers[0].url` from the OAS file.
 
@@ -67,19 +80,6 @@ explicit user permission before execution.
      - If **Try a different URL** → ask for new URL, store as `SCAN_TARGET_URL`, re-run from Stage 1.
      - If **Continue anyway** → proceed with warning noted.
      - If **Cancel** → stop.
-
-3. **Ask for Phase 1 permission.** Call `AskUserQuestion`:
-   - **question**: `"Ready to run a 42Crunch Audit on <filename>. This will analyse your OAS file and produce a scored report. Shall I proceed?"`
-   - **options**: `["Yes, proceed", "No, cancel"]`
-
-4. **Execute Phase 1 — Audit.** Mode is already resolved from pre-flight — do
-   not re-derive it. Read `../../references/audit-workflow.md` and apply only
-   the commands for the identified mode throughout.
-   The workflow runs the audit, then presents a **developer-readable,
-   risk-classified report** (SQG-Blocking / Security / Data Validation tiers)
-   with plain-English titles and risk descriptions — no raw rule IDs. It then
-   pauses and asks the user to consent before applying any fixes. Fixes are
-   only applied after explicit confirmation.
 
 5. **OAS analysis for Phase 2 preview** — run silently after Phase 1 completes,
    before asking for Phase 2 permission.
@@ -164,6 +164,8 @@ Phase 2 — Scan Complete
   Authorization:  BOLA confirmed on 1 operation — OAS updated · server-side fix applied
   Conformance:    1 SQG-blocking issue fixed (OAS + code) · 3 informational findings surfaced
   OAS updated:    <path/to/openapi.json>
+
+  ↑ <input_tokens> input · ↓ <output_tokens> output · ⚡ <cache_read_tokens> cached · Σ <total_tokens> total
 ```
 
 Show only the one SQG line per phase that matches the current mode and result.
