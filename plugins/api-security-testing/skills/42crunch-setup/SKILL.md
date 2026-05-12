@@ -1,13 +1,12 @@
 ---
 name: 42crunch-setup
-description: >
-  Set up the 42Crunch environment so that audit and scan skills can run
+description: 'Set up the 42Crunch environment so that audit and scan skills can run
   without friction. Use this skill whenever the user wants to configure
   42Crunch for the first time, install or update the 42c-ast binary, configure
   an API key, or troubleshoot missing credentials or binary errors. Triggers
   on phrases like "setup 42crunch", "configure 42crunch", "install 42c-ast",
   "update 42c-ast", "set api key", "42crunch not working", "binary not found",
-  or any request to prepare the environment before running an audit or scan.
+  or any request to prepare the environment before running an audit or scan.'
 ---
 
 # 42Crunch Setup

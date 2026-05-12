@@ -1,13 +1,12 @@
 ---
 name: 42crunch-audit
-description: >
-  Run a 42Crunch API Security Audit and fix SQG-blocking issues in an OpenAPI
+description: 'Run a 42Crunch API Security Audit and fix SQG-blocking issues in an OpenAPI
   Specification file. Use this skill whenever the user wants to audit an OAS
   file for security issues, fix SQG-blocking issues, score an API, apply data
   dictionary enrichment, or remediate audit findings. Triggers on phrases like
   "run audit", "audit only", "fix audit issues", "SQG audit", "42crunch audit",
   "audit score", or any request focused on static OAS analysis and remediation
-  without running a live scan.
+  without running a live scan.'
 ---
 
 # 42Crunch Audit Skill

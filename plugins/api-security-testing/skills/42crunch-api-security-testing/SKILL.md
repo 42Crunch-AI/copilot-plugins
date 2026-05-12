@@ -1,13 +1,12 @@
 ---
 name: 42crunch-api-security-testing
-description: >
-  Run both a 42Crunch Audit and a live Scan together in a single pipeline.
+description: 'Run both a 42Crunch Audit and a live Scan together in a single pipeline.
   Use this skill when the user wants to run audit and scan together, complete
   the full security pipeline, or when the request is ambiguous about which
   phase to run. Triggers on phrases like "run audit and scan", "full 42crunch
   pipeline", "full security check", "audit then scan", "42crunch", or "SQG".
   Do NOT use this skill if the user explicitly requests only an audit (use
-  42crunch-audit) or only a scan (use 42crunch-scan).
+  42crunch-audit) or only a scan (use 42crunch-scan).'
 ---
 
 # 42Crunch API Security Skill

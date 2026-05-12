@@ -1,14 +1,13 @@
 ---
 name: 42crunch-scan
-description: >
-  Run a 42Crunch live conformance and authorization scan against an API and fix
+description: 'Run a 42Crunch live conformance and authorization scan against an API and fix
   SQG-blocking scan findings. Use this skill whenever the user wants to run a
   conformance test, authorization scan, BOLA test, BFLA test, generate or
   configure a scan config, or fix scan-reported issues. Triggers on phrases
   like "run scan", "scan only", "conformance test", "BOLA test", "BFLA test",
   "42crunch scan", "scan config", or any request focused on live API testing
   without running a static audit. Use 42crunch-api-security-testing when the user wants both
-  audit and scan together.
+  audit and scan together.'
 ---
 
 # 42Crunch Scan Skill
