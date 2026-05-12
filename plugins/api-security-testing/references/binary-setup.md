@@ -22,7 +22,7 @@ Resolve the canonical path for the current OS:
 - macOS/Linux: `$HOME/.42crunch/bin/42c-ast`
 - Windows: `%APPDATA%\42Crunch\bin\42c-ast.exe`
 
-Resolve `BIN_DIR` and `BINARY_PATH`:
+Initialize `BIN_DIR` and `BINARY_PATH` before any version checks:
 
 ```bash
 # macOS / Linux
@@ -54,7 +54,7 @@ New-Item -ItemType Directory -Force -Path $BIN_DIR | Out-Null
 
 ## Step 1 — Detect OS and architecture
 
-Determine the current platform and resolve `PLATFORM_KEY`:
+Determine the current platform and resolve `BIN_DIR` and `BINARY_PATH`:
 
 | OS | Architecture | Platform key | BIN_DIR | BINARY_PATH |
 |----|-------------|--------------|---------|-------------|
@@ -74,11 +74,17 @@ case "$ARCH" in
   *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
 esac
 PLATFORM_KEY="${OS}-${ARCH_KEY}"
+BIN_DIR="$HOME/.42crunch/bin"
+BINARY_PATH="$BIN_DIR/42c-ast"
+mkdir -p "$BIN_DIR"
 ```
 
 ```powershell
 # Windows
 $PLATFORM_KEY = "windows-amd64"
+$BIN_DIR = "$env:APPDATA\42Crunch\bin"
+$BINARY_PATH = "$BIN_DIR\42c-ast.exe"
+New-Item -ItemType Directory -Force -Path $BIN_DIR | Out-Null
 ```
 
 ---
@@ -167,15 +173,7 @@ TMP_BIN="/tmp/42c-ast-download"
 curl -fsSL "$DOWNLOAD_URL" -o "$TMP_BIN"
 
 # Verify SHA-256
-if command -v sha256sum >/dev/null 2>&1; then
-  ACTUAL_SHA=$(sha256sum "$TMP_BIN" | awk '{print $1}')
-elif command -v shasum >/dev/null 2>&1; then
-  ACTUAL_SHA=$(shasum -a 256 "$TMP_BIN" | awk '{print $1}')
-else
-  echo "ERROR: sha256sum or shasum is required to verify checksum."
-  rm -f "$TMP_BIN"
-  exit 1
-fi
+ACTUAL_SHA=$(shasum -a 256 "$TMP_BIN" | awk '{print $1}')
 if [ "$ACTUAL_SHA" != "$EXPECTED_SHA256" ]; then
   echo "SHA-256 mismatch — aborting install."
   rm -f "$TMP_BIN"
