@@ -22,6 +22,20 @@ Resolve the canonical path for the current OS:
 - macOS/Linux: `$HOME/.42crunch/bin/42c-ast`
 - Windows: `%APPDATA%\42Crunch\bin\42c-ast.exe`
 
+Initialize `BIN_DIR` and `BINARY_PATH` in for binary version checks:
+
+```bash
+# macOS / Linux
+BIN_DIR="$HOME/.42crunch/bin"
+BINARY_PATH="$BIN_DIR/42c-ast"
+```
+
+```powershell
+# Windows
+$BIN_DIR = "$env:APPDATA\42Crunch\bin"
+$BINARY_PATH = "$BIN_DIR\42c-ast.exe"
+```
+
 - Binary **missing or broken** (`--version` exits non-zero or file absent) →
   continue to **Step 1** (detect OS/arch).
 - Binary **present** and `--version` exits 0 → capture the installed version:
