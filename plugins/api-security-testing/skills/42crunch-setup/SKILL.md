@@ -61,9 +61,9 @@ The procedure covers, in order:
 - If not configured (or replacing): walk the user through the guided flow:
   - **Are you an existing 42Crunch user?**
     - Yes → enter API Key → select Platform URL (US / EU / Other)
-    - No → **Are you a registered 42Crunch Freemium user?**
-      - Yes → enter Freemium Token
-      - No → show registration link (`https://42crunch.com/freemium/`) and stop
+    - No → **Are you a registered 42Crunch Free Trial user?**
+      - Yes → enter Free Trial Token
+      - No → show registration link (`[42Crunch Free Trial](https://42crunch.com/freemium/?source=copilot)`) and stop
 - Write credentials to `~/.42crunch/conf/env`, set `chmod 600` on macOS/Linux.
 
 ### Step 4 — Final verification
@@ -82,12 +82,12 @@ Run a quick end-to-end check:
 
 ```bash
 # Credentials (macOS / Linux)
-grep -E "^(API_KEY|FREEMIUM_TOKEN)=" "$HOME/.42crunch/conf/env"
+grep -E "^(API_KEY|TRIAL_TOKEN)=" "$HOME/.42crunch/conf/env"
 ```
 
 ```powershell
 # Credentials (Windows)
-Select-String -Path "$env:APPDATA\42Crunch\conf\env" -Pattern "^(API_KEY|FREEMIUM_TOKEN)="
+Select-String -Path "$env:APPDATA\42Crunch\conf\env" -Pattern "^(API_KEY|TRIAL_TOKEN)="
 ```
 
 If either check fails, report the specific failure and guide the user to resolve
@@ -131,11 +131,12 @@ off.
 | Item             | Status                                              |
 |------------------|-----------------------------------------------------|
 | Binary           | <BINARY_PATH> v<version>                            |
-| Credential mode  | <Platform \| Freemium>                              |
+| Credential mode  | <Platform \| Free Trial>                              |
 | API key / Token  | Platform: `api_••••••••` or `ide_••••••••`          |
-|                  | Freemium: `<first-4-chars>••••••••`                 |
+|                  | Free Trial: `<first-4-chars>••••••••`                 |
 |                  | (stored in <path>)                                  |
-| Platform host    | <url>  ← omit this row for freemium mode            |
+| Platform host    | <url>  ← omit this row for free trial mode            |
+
 ```
 
 ---
@@ -144,9 +145,9 @@ off.
 
 - All detection steps (binary check, credential check) run silently. Surface
   output only on failure or when prompting the user.
-- Never print the API key or Freemium token in plaintext after the user enters
+- Never print the API key or Free Trial token in plaintext after the user enters
   it. Always mask it (`api_••••••••` / `ide_••••••••` for platform tokens — keep
-  prefix, replace rest; `<first-4-chars>••••••••` for freemium tokens, e.g.
+  prefix, replace rest; `<first-4-chars>••••••••` for free trial tokens, e.g.
   `eyJh••••••••`).
 - Use `bash_tool` for all shell commands; use `str_replace_editor` or
   `create_file` when writing config files — never shell redirection.
@@ -161,4 +162,4 @@ off.
 |-----------------|----------------------------------|-----------------|
 | `API_KEY`       | *(required)*                     | Platform        |
 | `PLATFORM_HOST` | *(set during setup)*             | Platform only   |
-| `FREEMIUM_TOKEN`| *(required)*                     | Freemium        |
+| `TRIAL_TOKEN`| *(required)*                     | Free Trial        |

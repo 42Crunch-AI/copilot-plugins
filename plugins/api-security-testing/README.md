@@ -19,7 +19,7 @@ The `api-security-testing` plugin is designed for AI-assisted development workfl
 ## Prerequisites
 
 - [GitHub Copilot](https://github.com/features/copilot) (CLI or IDE extension)
-- A 42Crunch account — [freemium](https://42crunch.com/freemium/) or paid (Platform API key)
+- A 42Crunch account — [Free Trial](https://42crunch.com/freemium/?source=copilot) or paid (Platform API key)
 - For `42crunch-scan`: a running API server reachable at the URL in `servers[0]` of your OAS (or via `SCAN42C_HOST`)
 
 The `42c-ast` binary is downloaded and kept up to date automatically on first use.

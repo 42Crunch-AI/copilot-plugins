@@ -22,7 +22,7 @@ Resolve the canonical path for the current OS:
 - macOS/Linux: `$HOME/.42crunch/bin/42c-ast`
 - Windows: `%APPDATA%\42Crunch\bin\42c-ast.exe`
 
-Initialize `BIN_DIR` and `BINARY_PATH` in for binary version checks:
+Initialize `BIN_DIR` and `BINARY_PATH` for binary version check:
 
 ```bash
 # macOS / Linux

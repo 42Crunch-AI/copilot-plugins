@@ -41,36 +41,8 @@ running `42crunch-audit` first.
      - If **No** → ask the user to provide the URL and store it as `SCAN_TARGET_URL`.
      - If **Yes** → store `servers[0].url` as `SCAN_TARGET_URL`.
 
-   **Reachability check** — run immediately after `SCAN_TARGET_URL` is confirmed.
-   Uses a two-stage probe to distinguish "server is down" from "wrong base URL".
-
-   **Stage 1** — probe the base URL:
-   ```bash
-   curl -s -o /dev/null -w "%{http_code}" --max-time 5 <SCAN_TARGET_URL>/
-   ```
-   - **2xx, 3xx, 401, 403, or 405** → API is reachable. Proceed silently.
-   - **Connection refused or timeout** → call `AskUserQuestion`:
-     - **question**: `"I couldn't reach <SCAN_TARGET_URL> — the connection timed out or was refused. How would you like to proceed?"`
-     - **options**: `["Try a different URL", "Continue anyway — the API may be temporarily down", "Cancel"]`
-     - If **Try a different URL** → ask for new URL, store as `SCAN_TARGET_URL`, re-run from Stage 1.
-     - If **Continue anyway** → proceed with warning noted.
-     - If **Cancel** → stop.
-   - **404** → ambiguous (server may be up but nothing is mounted at root). Proceed to Stage 2.
-
-   **Stage 2** — probe the first simple OAS path (only reached when Stage 1 returns 404):
-   Find the first `GET` path in the OAS that has no required path parameters. Strip any
-   `{param}`-style segments and probe:
-   ```bash
-   curl -s -o /dev/null -w "%{http_code}" --max-time 5 <SCAN_TARGET_URL><first_simple_path>
-   ```
-   - **Any HTTP response** → server is up; root just has no handler. Proceed silently.
-   - **Connection refused or timeout** → same `AskUserQuestion` as Stage 1.
-   - **404 again** → call `AskUserQuestion`:
-     - **question**: `"The server responded but both / and <path> returned 404 — the base URL may be incorrect (the API may be mounted at a different prefix). How would you like to proceed?"`
-     - **options**: `["Try a different URL", "Continue anyway", "Cancel"]`
-     - If **Try a different URL** → ask for new URL, store as `SCAN_TARGET_URL`, re-run from Stage 1.
-     - If **Continue anyway** → proceed with warning noted.
-     - If **Cancel** → stop.
+   **Reachability check** — read `../../references/reachability-check.md` and run
+   the two-stage probe now. Return here once it completes (or stop if the user cancels).
 
 3. **OAS analysis for scan preview** — run silently before asking permission.
 
@@ -89,7 +61,7 @@ running `42crunch-audit` first.
        Auth:     <scheme types>  [+  second user needed — <N> BOLA candidate(s)]
        Samples:  OAS has sample data  /  No samples — you'll need to provide test data
        Tag:      <category>:<tagname>           ← platform mode only, when a tag is assigned; omit if no tag
-       Mode:     Platform / Freemium
+       Mode:     Platform / Free Trial
      ```
      `"I'm ready to start configuring the scan. I'll ask for credentials, classify your operations, and set up test scenarios — then run a happy path validation before the full scan. Shall I proceed?"`
    - **options**: `["Yes, let's configure", "No, cancel"]`
@@ -108,7 +80,7 @@ running `42crunch-audit` first.
   `scan conf validate` and resolve all validation errors before continuing to
   happy-path or full scan runs.
 
-   **Freemium mode**: no SQG is enforced for scan. Present all findings for
+   **Free Trial mode**: no SQG is enforced for scan. Present all findings for
    information. The user decides which (if any) to fix.
 
 6. **Present the final scan summary** (see Output Format below).
@@ -123,14 +95,15 @@ After the scan completes, produce a summary in this shape:
 
 ```
 Scan Complete
-  Mode:           Platform / Freemium
+  Mode:           Platform / Free Trial
   SQG:            PASSED  (<sqg-name> — your org's security quality gate is met)    ← platform mode, passed
   SQG:            FAILED  (<sqg-name> — the quality gate is not met; fixes above are required)    ← platform mode, failed
-  SQG:            N/A  (Freemium — scan findings are informational; no gate enforced)    ← freemium mode
+  SQG:            N/A  (Free Trial — scan findings are informational; no gate enforced)    ← free trial mode
   Tag:            <category>:<tagname>             ← platform mode only, when a tag is assigned; omit this row if no tag
   Authorization:  BOLA confirmed on 1 operation — OAS updated · server-side fix applied
   Conformance:    1 SQG-blocking issue fixed (OAS + code) · 3 informational findings surfaced
   OAS updated:    <path/to/openapi.json>
+
 ```
 
 Show only the one SQG line that matches the current mode and result.
@@ -145,5 +118,5 @@ If the user declined to apply fixes or no issues were found, note that instead.
 |----------------|---------|
 | `SCAN42C_HOST` | Scan target base URL (overrides OAS `servers[0]`) — Both modes |
 
-All other variables (`API_KEY`, `PLATFORM_HOST`, `FREEMIUM_TOKEN`) and general
+All other variables (`API_KEY`, `PLATFORM_HOST`, `TRIAL_TOKEN`) and general
 constraints are defined in `../../references/pre-flight.md`.

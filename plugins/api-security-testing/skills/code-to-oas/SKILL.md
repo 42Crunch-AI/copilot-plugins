@@ -391,6 +391,7 @@ Coverage notes:
   - <any routes that were ambiguous or skipped, and why>
   - <any response bodies that could not be inferred>
   - <any assumptions made that the user should verify>
+
 ```
 
 ---

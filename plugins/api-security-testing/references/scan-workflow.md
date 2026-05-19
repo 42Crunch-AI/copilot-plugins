@@ -3,14 +3,14 @@
 > **Command conventions used throughout this file**
 > - `<binary>` — the full path resolved during binary discovery (e.g. `~/.42crunch/bin/42c-ast`). Never call `42c-ast` by name alone unless it is confirmed to be on PATH.
 > - **Platform mode**: prefix every command with `API_KEY="<resolved-value>" PLATFORM_HOST="<value>"` (both values read from `~/.42crunch/conf/env` on macOS/Linux or `%APPDATA%\42Crunch\conf\env` on Windows).
-> - **Freemium mode**: add `--freemium-host stateless.42crunch.com:443` and `--token <FREEMIUM_TOKEN>` to every command.
+> - **Free Trial mode**: add `--freemium-host stateless.42crunch.com:443` and `--token <TRIAL_TOKEN>` to every command.
 
 ---
 
 ## Step 1 — Locate or Create Scan Config
 
-> **Freemium mode**: omit `--tag` and `--report-sqg` from all commands in this step.
-> These flags require platform access and must not be used in freemium mode.
+> **Free Trial mode**: omit `--tag` and `--report-sqg` from all commands in this step.
+> These flags require platform access and must not be used in free trial mode.
 
 ### 1a — Resolve git root and alias
 
@@ -54,10 +54,10 @@ Check whether `.42c/scan/<alias>/scanconf.json` exists.
   API_KEY="<value>" PLATFORM_HOST="<value>" <binary> scan conf validate <relative-oas-path> \
     --conf-file .42c/scan/<alias>/scanconf.json
 
-  # Freemium mode
+  # Free Trial mode
   <binary> scan conf validate <relative-oas-path> \
     --freemium-host stateless.42crunch.com:443 \
-    --token <FREEMIUM_TOKEN> \
+    --token <TRIAL_TOKEN> \
     --conf-file .42c/scan/<alias>/scanconf.json
   ```
 - If valid (`statusCode: 0`): store `CONF_FILE=.42c/scan/<alias>/scanconf.json` and proceed to Step 2.
@@ -69,7 +69,7 @@ Check whether `.42c/scan/<alias>/scanconf.json` exists.
   mkdir -p .42c/scan/<alias>
   ```
 - Generate a baseline config using the **relative OAS path** (not alias, not absolute path).
-  Platform mode: include `--tag` only when a tag was resolved. Freemium mode: omit `--tag`.
+  Platform mode: include `--tag` only when a tag was resolved. Free Trial mode: omit `--tag`.
   ```bash
   # Platform mode
   API_KEY="<value>" PLATFORM_HOST="<value>" <binary> scan conf generate \
@@ -78,10 +78,10 @@ Check whether `.42c/scan/<alias>/scanconf.json` exists.
     [--tag <category>:<tag>] \
     <relative-oas-path>
 
-  # Freemium mode
+  # Free Trial mode
   <binary> scan conf generate \
     --freemium-host stateless.42crunch.com:443 \
-    --token <FREEMIUM_TOKEN> \
+    --token <TRIAL_TOKEN> \
     --output-format json \
     --output .42c/scan/<alias>/scanconf.json \
     <relative-oas-path>
@@ -117,10 +117,10 @@ run an immediate config validation checkpoint before proceeding.
 API_KEY="<value>" PLATFORM_HOST="<value>" <binary> scan conf validate <relative-oas-path> \
   --conf-file <CONF_FILE>
 
-# Freemium mode
+# Free Trial mode
 <binary> scan conf validate <relative-oas-path> \
   --freemium-host stateless.42crunch.com:443 \
-  --token <FREEMIUM_TOKEN> \
+  --token <TRIAL_TOKEN> \
   --conf-file <CONF_FILE>
 ```
 
@@ -726,10 +726,10 @@ classification, scenario chains, and authorization test wiring), validate
 API_KEY="<value>" PLATFORM_HOST="<value>" <binary> scan conf validate <relative-oas-path> \
   --conf-file <CONF_FILE>
 
-# Freemium mode
+# Free Trial mode
 <binary> scan conf validate <relative-oas-path> \
   --freemium-host stateless.42crunch.com:443 \
-  --token <FREEMIUM_TOKEN> \
+  --token <TRIAL_TOKEN> \
   --conf-file <CONF_FILE>
 ```
 
@@ -762,10 +762,10 @@ operations with failing happy paths, producing a cascade of false positives.
 API_KEY="<value>" PLATFORM_HOST="<value>" <binary> scan run --enrich=false \
   <relative-oas-path> --conf-file <CONF_FILE> > /tmp/42c-happy-out.json 2>&1
 
-# macOS / Linux — Freemium mode
+# macOS / Linux — Free Trial mode
 <binary> scan run --enrich=false <relative-oas-path> \
   --freemium-host stateless.42crunch.com:443 \
-  --token <FREEMIUM_TOKEN> --conf-file <CONF_FILE> > /tmp/42c-happy-out.json 2>&1
+  --token <TRIAL_TOKEN> --conf-file <CONF_FILE> > /tmp/42c-happy-out.json 2>&1
 ```
 
 ```powershell
@@ -774,10 +774,10 @@ $env:API_KEY="<value>"; $env:PLATFORM_HOST="<value>"
 & <binary> scan run --enrich=false <relative-oas-path> --conf-file <CONF_FILE> `
   > "$env:TEMP\42c-happy-out.json" 2>&1
 
-# Windows — Freemium mode
+# Windows — Free Trial mode
 & <binary> scan run --enrich=false <relative-oas-path> `
   --freemium-host stateless.42crunch.com:443 `
-  --token <FREEMIUM_TOKEN> --conf-file <CONF_FILE> `
+  --token <TRIAL_TOKEN> --conf-file <CONF_FILE> `
   > "$env:TEMP\42c-happy-out.json" 2>&1
 ```
 
@@ -922,10 +922,10 @@ Run the full scan, capturing output to a temp file for extraction:
 API_KEY="<value>" PLATFORM_HOST="<value>" <binary> scan run --enrich=false --report-sqg \
   <relative-oas-path> --conf-file <CONF_FILE> > /tmp/42c-scan-out.json 2>&1
 
-# macOS / Linux — Freemium mode
+# macOS / Linux — Free Trial mode
 <binary> scan run --enrich=false <relative-oas-path> \
   --freemium-host stateless.42crunch.com:443 \
-  --token <FREEMIUM_TOKEN> --conf-file <CONF_FILE> > /tmp/42c-scan-out.json 2>&1
+  --token <TRIAL_TOKEN> --conf-file <CONF_FILE> > /tmp/42c-scan-out.json 2>&1
 ```
 
 ```powershell
@@ -934,10 +934,10 @@ $env:API_KEY="<value>"; $env:PLATFORM_HOST="<value>"
 & <binary> scan run --enrich=false --report-sqg <relative-oas-path> --conf-file <CONF_FILE> `
   > "$env:TEMP\42c-scan-out.json" 2>&1
 
-# Windows — Freemium mode
+# Windows — Free Trial mode
 & <binary> scan run --enrich=false <relative-oas-path> `
   --freemium-host stateless.42crunch.com:443 `
-  --token <FREEMIUM_TOKEN> --conf-file <CONF_FILE> `
+  --token <TRIAL_TOKEN> --conf-file <CONF_FILE> `
   > "$env:TEMP\42c-scan-out.json" 2>&1
 ```
 
@@ -1038,9 +1038,9 @@ Then proceed to Step 7.
 
 ---
 
-**Freemium mode**: `sqgPass` will be absent or `true`. Present all findings
+**Free Trial mode**: `sqgPass` will be absent or `true`. Present all findings
 informally — no quality gate is enforced. Note to the user:
-> "In freemium mode the scan shows all findings for your information — there
+> "In free trial mode the scan shows all findings for your information — there
 > is no automatic quality gate. Authorization failures (red) are real
 > vulnerabilities worth fixing regardless of the gate (OWASP API1/API5).
 > Conformance findings (yellow) document gaps between your OAS contract and
@@ -1069,9 +1069,9 @@ Use plain-English descriptions — do not surface raw test keys or scan-report f
 Scan Results  |  SQG (<sqg-name>): PASSED / FAILED
 ```
 
-**Freemium mode header:**
+**Free Trial mode header:**
 ```
-Scan Results  |  SQG: N/A (Freemium — no scan SQG enforced)
+Scan Results  |  SQG: N/A (Free Trial — no scan SQG enforced)
 ```
 
 ```
@@ -1129,7 +1129,7 @@ If any BFLA finding was confirmed, add:
 3. Conformance findings **not** in `sqgDetails[].blockingRules` → surface only;
    do not include in the fix list.
 
-**Freemium mode:**
+**Free Trial mode:**
 1. All **authorization failures** (BOLA/BFLA confirmed) → always a fix candidate.
 2. There are no SQG-blocking conformance findings — all conformance findings are
    informational. Surface them to the user and ask which (if any) they want to fix.
@@ -1140,8 +1140,8 @@ If any BFLA finding was confirmed, add:
 - **question**: `"Here is the complete scan report (shown above). I can apply the following fixes to <filename>: 🔴 Authorization fixes: [list] 🟠 SQG-blocking conformance fixes: [list]. The 🟡 informational findings are not SQG-blocking and will not be fixed automatically — let me know if you'd like to address any of them too. What would you like to do?"`
 - **options**: `["Yes — apply all fixes now", "Show me the diff first", "No — skip fixes for now"]`
 
-**Freemium mode** — call `AskUserQuestion`:
-- **question**: `"Here is the complete scan report (shown above). No SQG enforcement applies in freemium mode. 🔴 Authorization fixes I can apply: [list] 🟡 Conformance findings (informational — your call whether to fix): [list]. What would you like to do?"`
+**Free Trial mode** — call `AskUserQuestion`:
+- **question**: `"Here is the complete scan report (shown above). No SQG enforcement applies in free trial mode. 🔴 Authorization fixes I can apply: [list] 🟡 Conformance findings (informational — your call whether to fix): [list]. What would you like to do?"`
 - **options**: `["Yes — apply the authorization fixes", "Show me the diff first", "No — skip fixes; summarise findings only"]`
 
 If the user chooses **"Show me the diff first"** in either mode, display the proposed
@@ -1247,434 +1247,11 @@ After all code fixes are applied or skipped, append to the final output:
 - Alias defined in `.42c/conf.yaml` — use with `--conf-name`
 - `<api-id>:<revision>` (requires valid `API_KEY` — fetched from platform)
 
+
 ---
 
 ## Scanconf Template
 
-Generic structural reference for `scanconf.json` (version 2.0.0). Use this when building or repairing a config manually. Replace every `<placeholder>` with the API-specific value. Omit `authorizationTests` when no BOLA/BFLA candidates exist; omit `requests` when no standalone utility requests are needed.
-
-### Top-level skeleton
-
-```json
-{
-  "version": "2.0.0",
-  "runtimeConfiguration": { ... },    // standard defaults — copy verbatim from generated config
-  "customizations": { ... },           // response-policy defaults — copy verbatim
-  "environments": { ... },             // host URL + per-user credential env vars
-  "operations": { ... },               // one entry per OAS operationId
-  "authenticationDetails": [ ... ],    // bearer / apiKey / basic credential acquisition
-  "authorizationTests": { ... },       // BOLA / BFLA test definitions (optional)
-  "requests": { ... }                  // named reusable utility requests (optional)
-}
-```
-
-### `runtimeConfiguration` — key flags
-
-Copy all fields verbatim from the generated config. Two fields change during the workflow:
-
-```json
-"happyPathOnly": false,         // set true for Step 5 validation; restore to false before full scan
-"laxTestingModeEnabled": false  // never set true before happy paths are confirmed
-```
-
-### `environments.default.variables` — structure
-
-```json
-"host": {
-  "name": "SCAN42C_HOST", "from": "environment", "required": false,
-  "default": "<target-base-url>"
-},
-"<var-name>": {
-  "name": "SCAN42C_<VAR_NAME>", "from": "environment", "required": false,
-  "default": "<default-value>"
-}
-```
-
-Add one entry per credential variable (user1, user2, throwaway, etc.).
-
----
-
-### Operation patterns
-
-#### Class-A — no auth (public endpoints: login, register)
-
-```json
-"<OperationId>": {
-  "operationId": "<OperationId>",
-  "request": {
-    "operationId": "<OperationId>",
-    "request": {
-      "type": "42c",
-      "details": {
-        "operationId": "<OperationId>",
-        "method": "<METHOD>",
-        "url": "{{host}}<path>",
-        "headers": [{ "key": "Content-Type", "value": "application/json" }],
-        "requestBody": { "mode": "json", "json": { "<field>": "{{<var>}}" } }
-      }
-    },
-    "defaultResponse": "<success-status>",
-    "responses": {
-      "<success-status>": { "expectations": { "httpStatus": <success-status> } },
-      "default": { "expectations": { "httpStatus": "default" } }
-    }
-  },
-  "scenarios": [
-    { "key": "happy.path", "fuzzing": true,
-      "requests": [{ "fuzzing": true, "$ref": "#/operations/<OperationId>/request" }] }
-  ]
-}
-```
-
-#### Class-A — with auth (standalone authenticated operations)
-
-Same as above but add `"auth": ["AccessToken"]` inside the outer `request` object (alongside `operationId` and `request`). No `before` block needed.
-
-#### Class-B — dependency chain (operation needs an ID from a prior response)
-
-```json
-"<OperationId>": {
-  "operationId": "<OperationId>",
-  "request": {
-    "operationId": "<OperationId>",
-    "auth": ["AccessToken"],
-    "request": {
-      "type": "42c",
-      "details": {
-        "operationId": "<OperationId>",
-        "method": "<METHOD>",
-        "url": "{{host}}<path>/{<id-param>}",
-        "paths": [{ "key": "<id-param>", "value": "{{<id-var>}}" }]
-      }
-    },
-    "defaultResponse": "<success-status>",
-    "responses": { ... }
-  },
-  "before": [
-    {
-      "$ref": "#/operations/<CreatorOperationId>/request",
-      "responses": {
-        "<success-status>": {
-          "expectations": { "httpStatus": <success-status> },
-          "variableAssignments": {
-            "<id-var>": {
-              "in": "body", "from": "response", "contentType": "json",
-              "path": { "type": "jsonPointer", "value": "/<id-field>" }
-            }
-          }
-        }
-      }
-    }
-  ],
-  "scenarios": [
-    { "key": "happy.path", "fuzzing": true,
-      "requests": [{ "fuzzing": true, "$ref": "#/operations/<OperationId>/request" }] }
-  ]
-}
-```
-
-To add a BOLA authorization test, append `"authorizationTests": ["<BolaTestName>"]` at the operation level.
-
-#### Resource-restoring `after` block (non-self-destructive deletes)
-
-For delete operations that remove a resource owned by User1 (e.g.
-`DELETE /account/products/cards/{id}`) but do NOT delete User1 themselves,
-use an `after` block to recreate the resource after each test run so subsequent
-fuzzing iterations find it:
-
-```json
-"<DeleteResourceOperationId>": {
-  "operationId": "<DeleteResourceOperationId>",
-  "request": { ... },
-  "before": [
-    {
-      "$ref": "#/operations/<GetResourceOperationId>/request",
-      "responses": {
-        "200": {
-          "expectations": { "httpStatus": 200 },
-          "variableAssignments": {
-            "<resourceId>": {
-              "in": "body", "from": "response", "contentType": "json",
-              "path": { "type": "jsonPointer", "value": "/<id-field>" }
-            }
-          }
-        }
-      }
-    }
-  ],
-  "after": [
-    {
-      "$ref": "#/operations/<CreateResourceOperationId>/request",
-      "responses": {
-        "200": {
-          "expectations": { "httpStatus": 200 },
-          "variableAssignments": {
-            "<resourceId>": {
-              "in": "body", "from": "response", "contentType": "json",
-              "path": { "type": "jsonPointer", "value": "/<id-field>" }
-            }
-          }
-        }
-      }
-    }
-  ],
-  "scenarios": [
-    {
-      "key": "happy.path", "fuzzing": true,
-      "requests": [{ "fuzzing": true, "$ref": "#/operations/<DeleteResourceOperationId>/request" }]
-    }
-  ]
-}
-```
-
-The `before` block fetches a valid resource ID; the `after` block recreates it.
-This keeps the test environment consistent across fuzzing iterations without
-needing a throwaway user.
-
-#### Class-D — throwaway user (self-destructive delete)
-
-The operation's `auth` field pins the throwaway credential directly.
-The `happy.path` scenario is a single delete step. The `before` block on the
-operation re-registers the throwaway user before each iteration so the
-`authenticationDetails` login step can always acquire a fresh token.
-
-```json
-"<DeleteSelfOperationId>": {
-  "operationId": "<DeleteSelfOperationId>",
-  "request": {
-    "operationId": "<DeleteSelfOperationId>",
-    "auth": ["AccessToken/<throwaway-credential-name>"],
-    "request": {
-      "type": "42c",
-      "details": {
-        "operationId": "<DeleteSelfOperationId>",
-        "method": "DELETE",
-        "url": "{{host}}<path>"
-      }
-    },
-    "defaultResponse": "<success-status>",
-    "responses": { ... }
-  },
-  "before": [
-    {
-      "$ref": "#/operations/<RegisterOperationId>/request",
-      "environment": {
-        "<emailVar>": "<throwaway@example.com>",
-        "<credentialVar>": "<throwaway-value>"
-      },
-      "responses": {
-        "201": { "expectations": { "httpStatus": 201 } },
-        "409": { "expectations": { "httpStatus": 409 } }
-      }
-    }
-  ],
-  "scenarios": [
-    {
-      "key": "happy.path", "fuzzing": true,
-      "requests": [
-        {
-          "fuzzing": true,
-          "$ref": "#/operations/<DeleteSelfOperationId>/request"
-        }
-      ]
-    }
-  ]
-}
-```
-
-The `auth` field ensures only the throwaway credential is used — User1 is never
-touched. The operation's `before` block re-registers the throwaway before each
-iteration so the `authenticationDetails` login flow can always acquire a fresh
-token.
-
-To add a BOLA authorization test, append `"authorizationTests": ["<BolaTestName>"]` at the operation level.
-
----
-
-### `authenticationDetails` — bearer token
-
-```json
-"authenticationDetails": [
-  {
-    "AccessToken": {
-      "type": "bearer",
-      "default": "User1Token",
-      "credentials": {
-        "User1Token": {
-          "credential": "{{AccessToken}}",
-          "requests": [
-            {
-              "$ref": "#/operations/<LoginOperationId>/request",
-              "responses": {
-                "200": {
-                  "expectations": { "httpStatus": 200 },
-                  "variableAssignments": {
-                    "AccessToken": {
-                      "in": "body", "from": "response", "contentType": "json",
-                      "path": { "type": "jsonPointer", "value": "/<token-field>" }
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "User2Token": {
-          "credential": "{{AccessToken}}",
-          "requests": [
-            {
-              "$ref": "#/operations/<LoginOperationId>/request",
-              "environment": {
-                "<credential-var>": "{{<user2-credential-var>}}",
-                "<password-var>": "{{<user2-password-var>}}"
-              },
-              "responses": {
-                "200": {
-                  "expectations": { "httpStatus": 200 },
-                  "variableAssignments": {
-                    "AccessToken": {
-                      "in": "body", "from": "response", "contentType": "json",
-                      "path": { "type": "jsonPointer", "value": "/<token-field>" }
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "<throwaway-credential-name>": {
-          "credential": "{{AccessToken}}",
-          "requests": [
-            {
-              "$ref": "#/operations/<LoginOperationId>/request",
-              "environment": {
-                "<emailVar>": "<throwaway@example.com>",
-                "<credentialVar>": "<throwaway-value>"
-              },
-              "responses": {
-                "200": {
-                  "expectations": { "httpStatus": 200 },
-                  "variableAssignments": {
-                    "AccessToken": {
-                      "in": "body", "from": "response", "contentType": "json",
-                      "path": { "type": "jsonPointer", "value": "/<token-field>" }
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-]
-```
-
-- `User2Token` uses `environment` to override credential vars for the login step — no need to duplicate the login operation.
-- `<throwaway-credential-name>` acquires its token via the login step at session start. The register step is placed in the operation's `before` block so the throwaway user exists before each scenario iteration; it accepts both 201 and 409 for idempotency. The operation that uses this credential sets `"auth": ["AccessToken/<throwaway-credential-name>"]` directly on its `request` definition — not as a scenario-step override.
-
----
-
-### `authorizationTests` — BOLA and BFLA
-
-```json
-"authorizationTests": {
-  "<BolaTestName>": {
-    "key": "authentication-swapping-bola",
-    "source": ["AccessToken/User1Token"],
-    "target": ["AccessToken/User2Token"]
-  },
-  "<BflaTestName>": {
-    "key": "authentication-swapping-bfla",
-    "source": ["AccessToken/AdminToken"],
-    "target": ["AccessToken/User1Token"]
-  }
-}
-```
-
----
-
-### `requests` — named utility request
-
-Use for reusable calls that are not OAS operations. Referenced in `before` blocks or `authenticationDetails`. Common use cases:
-
-- **Utility / cleanup requests** — e.g. a DELETE to remove a throwaway user before re-registering, where no matching OAS operation exists.
-- **OAuth token endpoints** — e.g. `POST /oauth/token` or an external authorization server endpoint that issues access tokens but is not part of the API's own OAS file. Define it here and reference it via `$ref` in `authenticationDetails[*].credentials.<name>.requests` so the scanner can acquire tokens without an inline request block.
-
-```json
-"requests": {
-  "<UtilityRequestName>": {
-    "request": {
-      "type": "42c",
-      "details": {
-        "method": "<METHOD>",
-        "url": "{{host}}<path>",
-        "headers": [{ "key": "Authorization", "value": "Bearer {{AccessToken}}" }],
-        "requestBody": { "mode": "urlencoded", "urlencoded": { "<key>": { "value": "{{<value>}}" } } }
-      }
-    },
-    "defaultResponse": "<success-status>",
-    "responses": {
-      "<success-status>": { "expectations": { "httpStatus": <success-status> } }
-    }
-  }
-}
-```
-
-#### Referencing a `requests` entry from `authenticationDetails`
-
-When the token endpoint is defined in `requests` (e.g. an OAuth server not in the OAS), reference it with `"$ref": "#/requests/<RequestName>"` inside the credential's `requests` array. Use `environment` to inject per-credential variables:
-
-```json
-"authenticationDetails": [
-  {
-    "<SchemeName>": {
-      "type": "bearer",
-      "default": "User1Token",
-      "credentials": {
-        "User1Token": {
-          "credential": "{{AccessToken}}",
-          "requests": [
-            {
-              "$ref": "#/requests/<TokenRequestName>",
-              "environment": {
-                "<usernameVar>": "{{<user1UsernameVar>}}",
-                "<passwordVar>": "{{<user1PasswordVar>}}"
-              },
-              "responses": {
-                "200": {
-                  "expectations": { "httpStatus": 200 },
-                  "variableAssignments": {
-                    "AccessToken": {
-                      "from": "response", "in": "body", "contentType": "json",
-                      "path": { "type": "jsonPointer", "value": "/<tokenField>" }
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-]
-```
-
-The key difference from an OAS-operation reference (`"$ref": "#/operations/<OperationId>/request"`) is the path prefix: `#/requests/<RequestName>` targets the top-level `requests` map, while `#/operations/<OperationId>/request` targets the `operations` map. Both support `environment` overrides and `variableAssignments` on responses.
-
----
-
-### Rules at a glance
-
-| Rule | Reason |
-|---|---|
-| Always use `$ref` in `requests` arrays — never inline `request` objects | Inline requests have no `operationId`; the VS Code extension rejects them |
-| `auth: ["AccessToken"]` goes in the outer `request` object, not inside `details` | `details` is the raw HTTP descriptor; auth injection is a scanner concern |
-| `environment` overrides in a step apply only to that step | Safe credential/variable swap without duplicating the operation |
-| Never use `"skipped": true` on Class-D operations | The scanner ignores it and deletes the primary user, breaking subsequent tests |
-| Never override the token variable via `environment` to swap credentials on a Class-D operation | `authenticationDetails` tokens are cached at session start; environment overrides do not change which cached token is injected |
-| Class-D operations: set `"auth": ["AccessToken/<throwaway>"]` on the operation definition, not as a scenario-step override | The credential must be pinned at the operation level so the scanner uses the throwaway for ALL execution paths — happy path, fuzzing, and authorization tests |
-| Class-D scenarios: delete only — do NOT re-register in the scenario | The operation's `before` block already re-registers the throwaway before each iteration; adding a re-register step in the scenario is redundant and incorrect |
-| Non-self-destructive deletes: use `after` block to recreate the resource | Keeps the test environment consistent across fuzzing iterations without a throwaway user |
+When building or repairing a config manually (config is missing, invalid, or
+has structural gaps), read `./scanconf-templates.md` for the complete JSON
+patterns and the rules-at-a-glance table.
