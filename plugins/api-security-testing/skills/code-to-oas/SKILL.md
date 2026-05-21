@@ -1,12 +1,13 @@
 ---
 name: code-to-oas
-description: 'Analyze an entire API codebase and generate an accurate OpenAPI Specification
+description: >
+  Analyze an entire API codebase and generate an accurate OpenAPI Specification
   (OAS 3.0) file from the source code. Use this skill whenever the user wants
   to generate, create, or derive an OpenAPI spec from code, reverse-engineer an
   API definition, or document an existing API. Triggers on phrases like "generate
   OAS from code", "create OpenAPI spec", "document my API", "reverse-engineer
   spec", "write openapi.json from my codebase", or any request to produce an
-  OAS file by reading source files rather than an existing spec.'
+  OAS file by reading source files rather than an existing spec.
 ---
 
 # API source code to OpenAPI Specification

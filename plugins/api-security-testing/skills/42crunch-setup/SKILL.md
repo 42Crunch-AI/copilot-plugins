@@ -1,12 +1,13 @@
 ---
 name: 42crunch-setup
-description: 'Set up the 42Crunch environment so that audit and scan skills can run
+description: >
+  Set up the 42Crunch environment so that audit and scan skills can run
   without friction. Use this skill whenever the user wants to configure
   42Crunch for the first time, install or update the 42c-ast binary, configure
   an API key, or troubleshoot missing credentials or binary errors. Triggers
   on phrases like "setup 42crunch", "configure 42crunch", "install 42c-ast",
   "update 42c-ast", "set api key", "42crunch not working", "binary not found",
-  or any request to prepare the environment before running an audit or scan.'
+  or any request to prepare the environment before running an audit or scan.
 ---
 
 # 42Crunch Setup
@@ -131,11 +132,11 @@ off.
 | Item             | Status                                              |
 |------------------|-----------------------------------------------------|
 | Binary           | <BINARY_PATH> v<version>                            |
-| Credential mode  | <Platform \| Free Trial>                              |
+| Credential mode  | <Platform \| Free Trial>                            |
 | API key / Token  | Platform: `api_••••••••` or `ide_••••••••`          |
-|                  | Free Trial: `<first-4-chars>••••••••`                 |
+|                  | Free Trial: `<first-4-chars>••••••••`               |
 |                  | (stored in <path>)                                  |
-| Platform host    | <url>  ← omit this row for free trial mode            |
+| Platform host    | <url>  ← omit this row for free trial mode          |
 
 ```
 
@@ -162,4 +163,4 @@ off.
 |-----------------|----------------------------------|-----------------|
 | `API_KEY`       | *(required)*                     | Platform        |
 | `PLATFORM_HOST` | *(set during setup)*             | Platform only   |
-| `TRIAL_TOKEN`| *(required)*                     | Free Trial        |
+| `TRIAL_TOKEN`.  | *(required)*                     | Free Trial      |
