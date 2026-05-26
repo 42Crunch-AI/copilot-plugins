@@ -19,18 +19,22 @@ plugins/                        # Copilot plugins developed by 42Crunch
     LICENSE                     # License
 ```
 
+## Prerequisites
+
+The [GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli) is required to add marketplaces and install plugins using the `copilot` CLI commands below.
+
 ## Adding this Marketplace
 
-Register the 42Crunch marketplace with GitHub Copilot once, then install any plugin from it:
+Register the 42Crunch marketplace with GitHub Copilot once, then install the plugin from it:
 
 ```
-copilot plugin marketplace add 42Crunch-AI/copilot-plugins
+copilot plugin marketplace add https://github.com/42Crunch-AI/copilot-plugins
 ```
 
 Or from an interactive Copilot session:
 
 ```
-/plugin marketplace add 42Crunch-AI/copilot-plugins
+/plugin marketplace add https://github.com/42Crunch-AI/copilot-plugins
 ```
 
 ## Available Plugins

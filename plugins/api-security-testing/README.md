@@ -26,10 +26,12 @@ The `42c-ast` binary is downloaded and kept up to date automatically on first us
 
 ## Installation
 
+> **Requirement:** The [GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli) is required to add marketplaces and install plugins using the commands below.
+
 Add the 42Crunch marketplace:
 
 ```
-copilot plugin marketplace add 42Crunch-AI/copilot-plugins
+copilot plugin marketplace add https://github.com/42Crunch-AI/copilot-plugins
 ```
 
 Install the `api-security-testing` plugin:
