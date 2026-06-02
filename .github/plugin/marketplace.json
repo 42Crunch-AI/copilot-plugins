@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "42crunch-api-security-testing",
-      "source": "./plugins/api-security-testing",
+      "source": "./plugins/42crunch-api-security-testing",
       "description": "Catch API security issues during development: audit, scan, remediate, validate with AI guardrails in GitHub Copilot.",
       "version": "1.0.4"
     }
