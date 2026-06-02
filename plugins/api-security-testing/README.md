@@ -14,7 +14,8 @@ The `api-security-testing` plugin is designed for AI-assisted development workfl
 | [`/42crunch-audit`](./README.md#42crunch-audit) | Static security audit of an OpenAPI Specification file with scored findings and AI-assisted fixes |
 | [`/42crunch-scan`](./README.md#42crunch-scan) | Live conformance and authorization scan (BOLA/BFLA) against a running API |
 | [`/42crunch-api-security-testing`](./README.md#42crunch-api-security-testing) | Full audit + scan pipeline in a single session |
-| [`/code-to-oas`](./README.md#code-to-oas) | Generate a complete `openapi.json` from your API source code| 
+| [`/code-to-oas`](./README.md#code-to-oas) | Generate a complete `openapi.json` from your API source code |
+| [`/postman-to-oas`](./README.md#postman-to-oas) | Convert a Postman collection (v2.0 or v2.1) into a complete OpenAPI 3.0 specification |
 
 ## Prerequisites
 
@@ -52,7 +53,7 @@ copilot plugin install api-security-testing@42crunch-marketplace
 
 ### `42crunch-setup`
 
-Installs the `42c-ast` binary for your OS/architecture, verifies its checksum, and walks you through credential configuration. Supports Platform (API key) and Freemium (token) modes. Credentials are stored in `~/.42crunch/conf/env` with `600` permissions.
+Installs the `42c-ast` binary for your OS/architecture, verifies its checksum, and walks you through credential configuration. Supports Platform (API key) and Free Trial (token) modes. Credentials are stored in `~/.42crunch/conf/env` with `600` permissions.
 
 > **Trigger:** "set up 42crunch", "configure 42crunch", "install 42c-ast", "update 42c-ast", "set api key", "42crunch not working", "binary not found"
 
@@ -74,7 +75,7 @@ Runs a static analysis of an OpenAPI Specification and produces a 0–100 securi
 Copilot asks your explicit consent before applying any changes, then re-runs the audit to confirm passage.
 
 **Platform mode:** SQG threshold enforced from your platform policy.  
-**Freemium mode:** No automated SQG gate; you set the target score and blocking severity for the session.
+**Free Trial mode:** No automated SQG gate; you set the target score and blocking severity for the session.
 
 > **Trigger:** "run audit", "42crunch audit", "fix audit issues", "SQG audit", "audit score"
 
@@ -82,6 +83,9 @@ Copilot asks your explicit consent before applying any changes, then re-runs the
 ```
 /42crunch-audit
 ```
+
+Copilot will prompt for:
+1. OpenAPI Specification file
 
 ---
 
@@ -98,7 +102,7 @@ Findings are classified into three tiers:
 Copilot asks your consent before applying any fixes — both OAS contract updates and server-side code changes.
 
 **Platform mode:** SQG enforced from platform policy.  
-**Freemium mode:** All findings presented informally; you decide what to fix.
+**Free Trial mode:** All findings presented informally; you decide what to fix.
 
 > **Trigger:** "run scan", "scan only", "conformance test", "BOLA test", "BFLA test", "42crunch scan", "scan config"
 
@@ -106,6 +110,10 @@ Copilot asks your consent before applying any fixes — both OAS contract update
 ```
 /42crunch-scan
 ```
+
+Copilot will prompt for:
+1. OpenAPI Specification file
+2. API host endpoint
 
 ---
 
@@ -119,6 +127,10 @@ Orchestrates Audit (Phase 1) and Scan (Phase 2) in sequence. Resolves the OAS fi
 ```
 /42crunch-api-security-testing
 ```
+
+Copilot will prompt for:
+1. OpenAPI Specification file
+2. API host endpoint
 
 ---
 
@@ -135,6 +147,27 @@ Supported frameworks: Express, Fastify, Koa, Hapi, NestJS, FastAPI, Flask, Djang
 /code-to-oas
 ```
 
+Copilot will prompt for:
+1. Working directory of API source code
+
+---
+
+### `postman-to-oas`
+
+Reads a Postman collection (v2.0 or v2.1) and an optional environment file, then generates a complete `openapi.json` (OAS 3.0). Extracts paths, methods, path/query/header parameters, request bodies, response bodies, response headers, and auth schemes. Resolves `{{variableName}}` placeholders from the environment file or collection variables. Deduplicates schemas into `components/schemas` using resource names derived from path segments, and performs a self-review pass before writing the output file.
+
+> **Trigger:** "convert postman to openapi", "postman collection to OAS", "generate spec from postman", "create openapi from postman"
+
+**Usage:**
+```
+/postman-to-oas
+```
+
+Copilot will prompt for:
+1. Postman collection file path (JSON, v2.0 or v2.1)
+2. Postman environment file path (optional)
+3. Output file path (default: `openapi.json` in the collection's directory)
+
 ---
 
 ## Configuration
@@ -145,7 +178,7 @@ Credentials are read from `~/.42crunch/conf/env` (macOS/Linux) or `%APPDATA%\42C
 |---|---|---|
 | `API_KEY` | Platform token (`api_*` or `ide_*`) | Platform |
 | `PLATFORM_HOST` | 42Crunch platform base URL (e.g. `https://us.42crunch.cloud`) | Platform |
-| `FREEMIUM_TOKEN` | Freemium token (Base64) | Freemium |
+| `TRIAL_TOKEN` | Free Trial token (Base64) | Free Trial |
 | `SCAN42C_HOST` | Override scan target URL (overrides `servers[0]` in OAS) | Both |
 
 Credentials are never printed in plaintext after entry.
