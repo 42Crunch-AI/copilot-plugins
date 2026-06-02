@@ -4,7 +4,7 @@ Automate API security directly in GitHub Copilot with 42Crunch - audit OpenAPI s
 
 ## Overview
 
-The `api-security-testing` plugin is designed for AI-assisted development workflows, it provides continuous guardrails through an **audit->scan->remediate->validate** loop, ensuring APIs meet enterprise security standards before deployment.
+The `42crunch-api-security-testing` plugin is designed for AI-assisted development workflows, it provides continuous guardrails through an **audit->scan->remediate->validate** loop, ensuring APIs meet enterprise security standards before deployment.
 
 ## Commands
 
@@ -35,10 +35,10 @@ Add the 42Crunch marketplace:
 copilot plugin marketplace add https://github.com/42Crunch-AI/copilot-plugins
 ```
 
-Install the `api-security-testing` plugin:
+Install the `42crunch-api-security-testing` plugin:
 
 ```
-copilot plugin install api-security-testing@42crunch-marketplace
+copilot plugin install 42crunch-api-security-testing@42crunch-marketplace
 ```
 
 ## Quick Start
