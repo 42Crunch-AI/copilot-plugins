@@ -1,7 +1,7 @@
 {
   "name": "42crunch-api-security-testing",
   "description": "Catch API security issues during development: audit, scan, remediate, validate with AI guardrails in GitHub Copilot.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": {
     "name": "42Crunch",
     "email": "support@42crunch.com"
@@ -24,10 +24,7 @@
     "vulnerability",
     "compliance",
     "owasp",
-    "bola",
-    "bfla",
     "ai",
-    "devsecops",
-    "42crunch"
+    "devsecops"
   ]
 }
