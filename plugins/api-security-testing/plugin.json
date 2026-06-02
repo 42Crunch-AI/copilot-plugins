@@ -1,0 +1,30 @@
+{
+  "name": "42crunch-api-security-testing",
+  "description": "Catch API security issues during development: audit, scan, remediate, validate with AI guardrails in GitHub Copilot.",
+  "version": "1.0.4",
+  "author": {
+    "name": "42Crunch",
+    "email": "support@42crunch.com"
+  },
+  "skills": [
+    "./skills/42crunch-api-security-testing/",
+    "./skills/42crunch-audit/",
+    "./skills/42crunch-scan/",
+    "./skills/42crunch-setup/",
+    "./skills/code-to-oas/",
+    "./skills/postman-to-oas/"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "openapi",
+    "api-security",
+    "audit",
+    "scan",
+    "remediation",
+    "vulnerability",
+    "compliance",
+    "owasp",
+    "ai",
+    "devsecops"
+  ]
+}
