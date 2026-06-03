@@ -7,12 +7,7 @@
     "email": "support@42crunch.com"
   },
   "skills": [
-    "./skills/42crunch-api-security-testing/",
-    "./skills/42crunch-audit/",
-    "./skills/42crunch-scan/",
-    "./skills/42crunch-setup/",
-    "./skills/code-to-oas/",
-    "./skills/postman-to-oas/"
+    "./skills/"
   ],
   "license": "MIT",
   "keywords": [
