@@ -9,7 +9,7 @@ The official [42Crunch](https://www.42crunch.com) plugin marketplace for GitHub 
 ```
 .github/plugin/
   marketplace.json              # Plugin registry manifest
-plugins/                        # Copilot plugins developed by 42Crunch
+plugins/                        # GitHub Copilot plugins developed by 42Crunch
   42crunch-api-security-testing/
     .github/plugin/
       plugin.json                 # Plugin metadata
@@ -25,17 +25,32 @@ The [GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-th
 
 ## Adding this Marketplace
 
-Register the 42Crunch marketplace with GitHub Copilot once, then install the plugin from it:
+Register the 42Crunch marketplace with GitHub Copilot:
+
+#### Using GitHub Copilot CLI
 
 ```
 copilot plugin marketplace add https://github.com/42Crunch-AI/copilot-plugins
 ```
 
-Or from an interactive Copilot session:
+#### Or Using an interactive GitHub Copilot session
 
 ```
 /plugin marketplace add https://github.com/42Crunch-AI/copilot-plugins
 ```
+
+#### Or Using GitHub Copilot Chat (for VSCode) plugin manager
+
+1. Open the VSCode settings (Preferences > Settings):
+
+![Copilot Settings](docs/images/copilot-settings.png)
+
+2. Type 'Marketplaces' in the search
+  - Click **Add Item** and paste the 42Crunch marketplace URL
+  - `https://github.com/42Crunch-AI/copilot-plugins`
+  - Click **OK**
+
+![Add Marketplace](docs/images/copilot-marketplace-add.png)
 
 ## Available Plugins
 
@@ -46,15 +61,31 @@ AI-powered API security plugin backed by 42Crunch. Audit OpenAPI specs, detect O
 **Install:**
 After registering the marketplace (see above), install the plugin:
 
+#### Using GitHub Copilot CLI
+
 ```
 copilot plugin install 42crunch-api-security-testing@42crunch-marketplace
 ```
 
-Or from an interactive Copilot session:
+#### Or Using an interactive GitHub Copilot session
 
 ```
 /plugin install 42crunch-api-security-testing@42crunch-marketplace
 ```
+
+#### Or Using GitHub Copilot Chat (for VSCode) plugin manager
+
+1. In GitHub Copilot Chat, type `/plugins` and press **Enter** to open the plugin manager:
+
+![Manage Plugins](docs/images/copilot-manage-plugins.png)
+
+2. Your VSCode extensions will appear in the Activity Bar, filtered on `@agentPlugins`
+
+3. Search for the 42Crunch agent plugin:
+  - Filter on '42crunch' in the search bar after the `@agentPlugins` prefix
+  - Click **Install** on the `42crunch-api-security-testing` plugin
+
+![Plugin Search and Install](docs/images/copilot-plugin-search-install.png)
 
 See the [plugin README](./plugins/42crunch-api-security-testing/README.md) for full documentation.
 
