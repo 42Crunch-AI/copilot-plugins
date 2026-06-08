@@ -89,7 +89,7 @@ copilot plugin install 42crunch-api-security-testing@42crunch-marketplace
 
 ![Plugin Search and Install](docs/images/copilot-plugin-search-install.png)
 
-See the [plugin README](./plugins/42crunch-api-security-testing/README.md) for full documentation.
+See the [plugin README](./plugins/42crunch-api-security-testing/README.md) for full documentation and [RECIPES.md](./plugins/42crunch-api-security-testing/RECIPES.md) for common scenario guides.
 
 
 ## Links
