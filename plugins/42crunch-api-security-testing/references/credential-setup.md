@@ -68,11 +68,20 @@ If replacing → continue to Step 2.
 
 ---
 
-## Step 2 — Determine Access Type
+## Step 2 — Determine Existing Access
 
 Call `AskUserQuestion`:
-- **question**: `"How do you access 42Crunch? (Free Trial, Individual, Individual Pro, and Team plans all use a personal access token. Enterprise uses a company Platform account with an API key.)"`
-- **options**: `["I have a token (Free Trial, Individual, Individual Pro, or Team)", "I have a Platform account (Enterprise)"]`
+- **question**: `"Do you have a 42Crunch Subscription?"`
+- **options**: `["No — I want to subscribe to a Free Trial", "Yes — I have a subscription (or an existing Free Trial account)"]`
+
+**If No** — continue to Path C.
+
+**If Yes** — call `AskUserQuestion`:
+- **question**: `"Is it a token (Free Trial, Individual, Individual Pro, or Team) or an Enterprise Platform account?"`
+- **options**: `["Token", "Enterprise Platform account"]`
+
+- **Token** chosen → continue to Path B.
+- **Enterprise Platform account** chosen → continue to Path A.
 
 ---
 
@@ -96,43 +105,40 @@ Store values as `API_KEY` and `PLATFORM_HOST`. Continue to Step 3.
 ### Path B — Token-based (Free Trial, Individual, Individual Pro, Team)
 
 Call `AskUserQuestion`:
-- **question**: `"Do you already have your token?"`
-- **options**: `["Yes — I have a token", "No — I need one"]`
-
-#### Path B-1 — Has a token
-
-Call `AskUserQuestion`:
 - **question**: `"Please paste your token (it's a long Base64 string):"`
 
 Wait for input. Store value as `TRIAL_TOKEN`. Continue to Step 3.
 
-#### Path B-2 — Needs a token
+---
 
-Call `AskUserQuestion`:
-- **question**: `"What would you like to do?"`
-- **options**: `["Start a Free Trial — free, full audit and scan functionality", "View paid plans — Individual, Individual Pro, or Team"]`
+### Path C — No Existing Access
 
-**If Free Trial** — inform the user:
+Inform the user:
 > No problem — getting a free account takes a minute.
 >
 > 1. Visit **[42Crunch Free Trial](https://42crunch.com/freemium/?source=copilot)**.
 > 2. Fill in your email address, accept terms and conditions and click Submit.
 > 3. Check your inbox for a confirmation email that includes your token.
 >
-> When you're ready, just say "continue" or "I have my token" and I'll pick up
-> exactly where we left off — you won't need to restart setup.
-
-**If paid plans** — inform the user:
-> Visit **[42Crunch Pricing](https://42crunch.com/pricing/)** to choose a plan:
+> Prefer to skip the trial and go straight to a paid plan? Visit
+> **[42Crunch Pricing](https://42crunch.com/pricing/)** to choose one:
 > - **Individual** — 1,000 Security Tokens / month, same token-based setup you'd use here.
 > - **Individual Pro** — 3,000 Security Tokens / month, same token-based setup.
 > - **Team 10** — unlimited Security Tokens for teams of up to 10, same token-based setup.
 > - **Team 25** — unlimited Security Tokens for teams of up to 25, same token-based setup.
 > - **Enterprise** — for teams and companies needing CI/CD integration, API Protection, and more. Uses a company Platform account with an API key instead of a token.
 >
-> When you're ready, just say "continue" and I'll pick up exactly where we left off.
+> When you're ready, just say "continue" or "I have my token" and I'll pick up
+> exactly where we left off — you won't need to restart setup.
 
 **Stop — do not proceed.** Credential setup is incomplete. Do not write any credentials file.
+
+**On resume** (user says "continue" or similar): call `AskUserQuestion`:
+- **question**: `"Did you sign up for a Free Trial/token-based plan, or an Enterprise account?"`
+- **options**: `["Token-based (Free Trial, Individual, Individual Pro, or Team)", "Enterprise"]`
+
+- **Token-based** chosen → continue to Path B.
+- **Enterprise** chosen → continue to Path A.
 
 ---
 
