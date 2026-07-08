@@ -5,6 +5,7 @@
 > - **Never write a literal credential value into a command.** Load credentials from the conf file into the environment first, then let the command inherit them — the raw value must never appear in a command string, tool output, or chat message.
 > - **Platform mode**: before every command, load credentials — macOS/Linux: `set -a; . "$HOME/.42crunch/conf/env"; set +a`; Windows: `Get-Content "$env:APPDATA\42Crunch\conf\env" | ForEach-Object { if ($_ -match '^([^=]+)=(.*)$') { [Environment]::SetEnvironmentVariable($matches[1], $matches[2], 'Process') } }`. The command then inherits `API_KEY`/`PLATFORM_HOST` — no explicit prefix needed.
 > - **Token mode**: load `TRIAL_TOKEN` the same way, then add `--freemium-host stateless.42crunch.com:443` and `--token "$TRIAL_TOKEN"` (macOS/Linux) or `--token $env:TRIAL_TOKEN` (Windows) to every command — never the literal token.
+> - **User agent (usage metrics)**: every `42c-ast` command in this file must carry `--user-agent "$USER_AGENT"` (macOS/Linux) or `--user-agent $UserAgent` (Windows) so 42Crunch can attribute usage to this integration. Format: `42Crunch-Copilot-<source>/<binary-version>` (e.g. `42Crunch-Copilot-CLI/3.57.0`) — the value never contains secrets. `<source>` detection, most specific signal first: `COPILOT_AGENT_JOB_ID` set → `CodingAgent` (Copilot coding agent on GitHub Actions — it also sets `COPILOT_CLI`, so this check must come first); `COPILOT_CLI` set → `CLI` (injected by Copilot CLI into every shell it spawns); `COPILOT_AGENT=1` or `AI_AGENT=github_copilot_vscode_agent` (VS Code ≥ 1.121 agent terminals) or `TERM_PROGRAM=vscode` / `VSCODE_PID` (older VS Code) → `VSCode`; `TERMINAL_EMULATOR` containing `JetBrains` → `JetBrains`; otherwise → `CLI`. Compute it in the same shell invocation as the command, right after loading credentials — macOS/Linux: `UA_SRC=$(if [ -n "$COPILOT_AGENT_JOB_ID" ]; then echo CodingAgent; elif [ -n "$COPILOT_CLI" ]; then echo CLI; elif [ "$COPILOT_AGENT" = "1" ] || [ "$AI_AGENT" = "github_copilot_vscode_agent" ] || [ "$TERM_PROGRAM" = "vscode" ] || [ -n "$VSCODE_PID" ]; then echo VSCode; elif [ "${TERMINAL_EMULATOR#*JetBrains}" != "$TERMINAL_EMULATOR" ]; then echo JetBrains; else echo CLI; fi); USER_AGENT="42Crunch-Copilot-${UA_SRC:-CLI}/$("<binary>" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"`; Windows: `$UaSrc = if ($env:COPILOT_AGENT_JOB_ID) { 'CodingAgent' } elseif ($env:COPILOT_CLI) { 'CLI' } elseif ($env:COPILOT_AGENT -eq '1' -or $env:AI_AGENT -eq 'github_copilot_vscode_agent' -or $env:TERM_PROGRAM -eq 'vscode' -or $env:VSCODE_PID) { 'VSCode' } elseif ($env:TERMINAL_EMULATOR -like '*JetBrains*') { 'JetBrains' } else { 'CLI' }` then `$UserAgent = "42Crunch-Copilot-$UaSrc/$(((& <binary> --version) | Select-String '\d+\.\d+\.\d+' | Select-Object -First 1).Matches[0].Value)"`. If a command fails with `unknown flag: --user-agent` (a binary older than 3.57.0 that could not be updated), retry it once without the flag — usage metrics must never block a run.
 > - **Score tracking**: record `initial_score`, `initial_sec_score`, and `initial_data_score` immediately after the first parse (Step 2). These are used to build the before/after comparison in the final summary.
 
 ---
@@ -32,7 +33,10 @@ New-Item -ItemType Directory -Force -Path $OUTPUT_DIR | Out-Null
 
 ```bash
 set -a; . "$HOME/.42crunch/conf/env"; set +a
+UA_SRC=$(if [ -n "$COPILOT_AGENT_JOB_ID" ]; then echo CodingAgent; elif [ -n "$COPILOT_CLI" ]; then echo CLI; elif [ "$COPILOT_AGENT" = "1" ] || [ "$AI_AGENT" = "github_copilot_vscode_agent" ] || [ "$TERM_PROGRAM" = "vscode" ] || [ -n "$VSCODE_PID" ]; then echo VSCode; elif [ "${TERMINAL_EMULATOR#*JetBrains}" != "$TERMINAL_EMULATOR" ]; then echo JetBrains; else echo CLI; fi)
+USER_AGENT="42Crunch-Copilot-${UA_SRC:-CLI}/$("<binary>" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
 <binary> audit run \
+  --user-agent "$USER_AGENT" \
   --enrich=false \
   --output "$OUTPUT_DIR/report.json" \
   --output-format json \
@@ -45,7 +49,10 @@ set -a; . "$HOME/.42crunch/conf/env"; set +a
 
 ```bash
 set -a; . "$HOME/.42crunch/conf/env"; set +a
+UA_SRC=$(if [ -n "$COPILOT_AGENT_JOB_ID" ]; then echo CodingAgent; elif [ -n "$COPILOT_CLI" ]; then echo CLI; elif [ "$COPILOT_AGENT" = "1" ] || [ "$AI_AGENT" = "github_copilot_vscode_agent" ] || [ "$TERM_PROGRAM" = "vscode" ] || [ -n "$VSCODE_PID" ]; then echo VSCode; elif [ "${TERMINAL_EMULATOR#*JetBrains}" != "$TERMINAL_EMULATOR" ]; then echo JetBrains; else echo CLI; fi)
+USER_AGENT="42Crunch-Copilot-${UA_SRC:-CLI}/$("<binary>" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
 <binary> audit run \
+  --user-agent "$USER_AGENT" \
   --enrich=false \
   --freemium-host stateless.42crunch.com:443 \
   --token "$TRIAL_TOKEN" \
