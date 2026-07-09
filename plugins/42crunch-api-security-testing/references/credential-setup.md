@@ -62,7 +62,7 @@ if (Select-String -Path $EnvFile -Pattern '^TRIAL_TOKEN=(.{4})' -ErrorAction Sil
   Announce `"Existing <mode> credentials found (<masked>) — keeping them."`
   and finish — **credential setup complete**. Do not ask the keep-or-replace
   question; the caller needed the environment completed, not re-credentialed.
-- **Called directly by the user**: call `AskUserQuestion`:
+- **Called directly by the user**: prompt the user:
   - **question**: `"Credentials already configured in ~/.42crunch/conf/env — running in <mode> mode. Key: <masked>. Would you like to keep the existing credentials or replace them?"`
   - **options**: `["Keep existing credentials", "Replace credentials"]`
 
@@ -77,13 +77,13 @@ If replacing → continue to Step 2.
 
 ## Step 2 — Determine Existing Access
 
-Call `AskUserQuestion`:
+Prompt the user:
 - **question**: `"Do you have a 42Crunch Subscription?"`
 - **options**: `["No — I want to subscribe to the Starter (Free Trial) plan", "Yes — I have a subscription (or an existing Starter (Free Trial) account)"]`
 
 **If No** — continue to Path C.
 
-**If Yes** — call `AskUserQuestion`:
+**If Yes** — prompt the user:
 - **question**: `"Is it a token-based plan (Starter (Free Trial), Individual, or Individual Pro) or a Platform account with an API key (Team 10, Team 25, or Enterprise)?"`
 - **options**: `["Token", "Platform account (API key)"]`
 
@@ -94,16 +94,16 @@ Call `AskUserQuestion`:
 
 ### Path A — Platform mode (Team 10, Team 25, Enterprise)
 
-Call `AskUserQuestion`:
+Prompt the user:
 - **question**: `"Please enter your API Key (it usually starts with api_ or ide_):"`
 
-Wait for input. Then call `AskUserQuestion`:
+Wait for input. Then prompt the user:
 - **question**: `"Which region hosts your 42Crunch platform? (Your organisation's IT or security team can confirm this — it's also visible in the URL when you log in.)"`
 - **options**: `["US — https://us.42crunch.cloud/", "EU — https://eu.42crunch.cloud/", "Other — I'll enter my platform URL manually"]`
 
 - If **US** chosen: `PLATFORM_HOST=https://us.42crunch.cloud`
 - If **EU** chosen: `PLATFORM_HOST=https://eu.42crunch.cloud`
-- If **Other** chosen: call `AskUserQuestion` — **question**: `"Please enter your platform URL (e.g. https://your-org.42crunch.cloud):"` — store response as `PLATFORM_HOST`. Trim any trailing slashes.
+- If **Other** chosen: prompt the user — **question**: `"Please enter your platform URL (e.g. https://your-org.42crunch.cloud):"` — store response as `PLATFORM_HOST`. Trim any trailing slashes.
 
 Store values as `API_KEY` and `PLATFORM_HOST`. Continue to Step 3.
 
@@ -111,7 +111,7 @@ Store values as `API_KEY` and `PLATFORM_HOST`. Continue to Step 3.
 
 ### Path B — Token-based (Starter (Free Trial), Individual, Individual Pro)
 
-Call `AskUserQuestion`:
+Prompt the user:
 - **question**: `"Please paste your token (it's a long Base64 string):"`
 
 Wait for input. Store value as `TRIAL_TOKEN`. Continue to Step 3.
@@ -140,7 +140,7 @@ Inform the user:
 
 **Stop — do not proceed.** Credential setup is incomplete. Do not write any credentials file.
 
-**On resume** (user says "continue" or similar): call `AskUserQuestion`:
+**On resume** (user says "continue" or similar): prompt the user:
 - **question**: `"Did you sign up for a token-based plan, or a plan that uses a Platform account?"`
 - **options**: `["Token-based (Starter (Free Trial), Individual, or Individual Pro)", "Platform account (Team 10, Team 25, or Enterprise)"]`
 
@@ -164,7 +164,8 @@ New-Item -ItemType Directory -Force -Path "$env:APPDATA\42Crunch\conf" | Out-Nul
 ```
 
 **This step fully replaces the credentials file — it is never a merge.** Use
-the `Write` tool specifically (not `Edit`) so the result contains **only**
+the host's shell or file-write capability to rewrite the file from scratch in
+one shot, rather than patching or merging it, so the result contains **only**
 the keys for the resolved mode below, with nothing left over from a
 previous mode. This matters most when switching modes: `pre-flight.md`'s
 mode detection checks `TRIAL_TOKEN` before `API_KEY`, so a leftover

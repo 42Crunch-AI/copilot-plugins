@@ -156,8 +156,11 @@ off.
   it. Always mask it (`api_••••••••` / `ide_••••••••` for platform tokens — keep
   prefix, replace rest; `<first-4-chars>••••••••` for tokens, e.g.
   `eyJh••••••••`).
-- Use `bash_tool` for all shell commands; use `str_replace_editor` or
-  `create_file` when writing config files — never shell redirection.
+- Use the host shell or terminal capability for all shell commands.
+- When switching credential modes, rewrite the credentials file from scratch
+  rather than patching or merging it.
+- When creating a new config file, use the host's file-write capability rather
+  than shell redirection.
 - Use `curl` for downloads; fall back to `wget` if `curl` is unavailable. On
   Windows use `Invoke-WebRequest`.
 - On Windows: binary filename is `42c-ast.exe`, paths use `\`, config lives in

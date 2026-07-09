@@ -135,7 +135,7 @@ if (Select-String -Path $EnvFile -Pattern '^TRIAL_TOKEN=' -Quiet -ErrorAction Si
   ```
   Required — run `42crunch-setup` to reconfigure if missing. Proceed silently.
 - **`MODE=badformat`** → warn the user: `"Your API key doesn't match the expected format (api_... or ide_...). Please check it or run 42crunch-setup to reconfigure."` Stop — do not proceed.
-- **`MODE=none`** → call `AskUserQuestion`:
+- **`MODE=none`** → prompt the user:
   - **question**: `"I don't see any 42Crunch credentials configured yet. I can walk you through setup now, or you can run 42crunch-setup manually when you're ready."`
   - **options**: `["Set up now", "Cancel — I'll run 42crunch-setup manually"]`
   - If **Set up now** → invoke `42crunch-setup` as a **subroutine** (pass caller context: `pre-flight`). Do not proceed if setup fails. On success, continue to Step 3.
@@ -148,9 +148,9 @@ if (Select-String -Path $EnvFile -Pattern '^TRIAL_TOKEN=' -Quiet -ErrorAction Si
 - If the user provided a path → use it.
 - If exactly one OAS file (`.json` or `.yaml` containing `openapi:`) is open
   in the editor → use it.
-- If **multiple** OAS files are open → call `AskUserQuestion`:
+- If **multiple** OAS files are open → prompt the user:
   - **question**: `"I see multiple OpenAPI files open. Which one should I use?"` — list each filename as an option.
-- If **no** OAS file can be resolved → call `AskUserQuestion`:
+- If **no** OAS file can be resolved → prompt the user:
   - **question**: `"I couldn't find an OpenAPI file. Would you like me to generate one from your source code first?"` — options: `["Yes — generate from source code", "No — I'll provide a path"]`
   - If **Yes** → invoke the `code-to-oas` skill, then resume with the generated file.
   - If **No** → ask the user to provide the file path and wait.
@@ -185,8 +185,8 @@ when a tag is assigned.
 
 ## General Constraints
 
-- Use `bash_tool` to execute all `42c-ast` commands.
-- Use `str_replace` or `create_file` to apply fixes to the OAS file.
+- Use the host shell or terminal capability to execute all `42c-ast` commands.
+- Apply fixes directly to the OAS file using the host's file-edit capability.
 - Never modify the OAS file without first describing what will change.
 - All credential inputs are ephemeral in-session values. Do not write tokens
   or passwords to disk outside of scan config files that already expect them.
